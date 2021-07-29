@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDoリストsss</title>
+</head>
 <body>
     <h1>ToDoリスト</h1>
     <p>
@@ -19,6 +27,29 @@
     <input id="input-todo-box" type="text">
     <button id="add-button">追加</button>
   
-    <script src='git.js'></script>
+    <script src='app.js'></script>
+  </body>
+  </html><body>
+    <h1>ToDoリスト</h1>
+    <p>
+      <label><input type="radio" name="radio1" value="1" id="radioall" checked>すべて</label>
+      <label><input type="radio" name="radio1" value="2" id="radiowork">作業中</label>
+      <label><input type="radio" name="radio1" value="3" id="radiodone">完了</label>
+    </p>
+    <table>
+      <thead>
+        <th>ID</th>
+        <th>コメント</th>
+        <th>状態</th>
+      </thead>
+      <tbody id="todo-body"></tbody>
+    </table>
+  
+    <h2>新規タスクの追加</h2>
+    <label for="input-todo-box">ToDoリスト</label>
+    <input id="input-todo-box" type="text">
+    <button id="add-button">追加</button>
+  
+    <script src='app.js'></script>
   </body>
   </html>
