@@ -1,69 +1,89 @@
-`use strict`
-  const todos = [];
-  const inputBox = document.getElementById('input-todo-box');
-  const addButton = document.getElementById('add-button');
-  const tableBody = document.getElementById('todo-body');
+"use strict";
 
-
-
-  addButton.addEventListener('click', (event) => {
-    const todo = { comment: inputBox.value, status: '作業中' }
-    inputBox.focus();
-    if (inputBox.value === '') {
-      alert('タスクを入力してください！');
-      return;
-    }
-    if (todo) {
-      todos.push(todo);
-      inputBox.value = '';
-      showTodos();
-    }
+const addbtn = document.getElementById("add_btn");
+const addvalue = document.getElementById("add_value");
+const text = document.getElementById("add_text");
+const todos = [];
+const displayTodos = (selecttodos) => {
+  addvalue.textContent = "";
+  selecttodos.forEach((todo) => {
+    const createTr = document.createElement("tr"); 
+    const createId = document.createElement("td"); 
+    createId.textContent = todo.taskid;
+    const createComment = document.createElement("td");
+    createComment.innerHTML = todo.comment;
+    const status_td = document.createElement("td");
+    createTr.appendChild(createId); 
+    createTr.appendChild(createComment); 
+    createTr.appendChild(status_td); 
+    status_td.append(createstatusbutton(todo)); 
+    status_td.append(createremoveButton());
+    addvalue.appendChild(createTr);
+    text.value = "";
   });
-  const showTodos = () => {
-    tableBody.textContent = '';
-    todos.forEach((todo, number) => {
-      const tableRecord = document.createElement('tr');
-      tableBody.appendChild(tableRecord);
-      const tableId = document.createElement('td');
-      const tableComment = document.createElement('td');
-      const tableStatus = document.createElement('td');
-      const tableAction = document.createElement('td');
-      tableId.textContent = number;
-      tableComment.textContent = todo.comment;
-      tableRecord.appendChild(tableId);
-      tableRecord.appendChild(tableComment);
-      tableRecord.appendChild(tableStatus);
-      tableRecord.appendChild(tableAction);
-      tableStatus.appendChild(createStatusButton());
-      tableAction.appendChild(createDeleteButton());
-    });
-  };
-  
-  const createStatusButton = () => {
-    const statusButton = document.createElement('button');
-    statusButton.classList.add("doing");
-    statusButton.textContent = '作業中';
-    statusButton.addEventListener('click', () => {
-      if (statusButton.textContent === '作業中') {
-        statusButton.classList.add("doing");
-        statusButton.textContent = '完了';
-      } else {
-        statusButton.classList.add("done");
-        statusButton.textContent = '作業中';
-      }
-    });
-    return statusButton;
-  };  
-
-  const createDeleteButton = () => {
-  const deleteButton = document.createElement('button');
-  deleteButton.textContent = '削除';
-  deleteButton.addEventListener('click', (e) => {
-    let t=e.target.closest('tr');
-    let idx=[...tableBody.querySelectorAll('tr')].indexOf(t);
-    t.parentNode.removeChild(t);
-    todos.splice(idx,1);
-    showTodos();
-  });
-  return deleteButton;
 };
+
+const createTodo = () => {
+  const taskid = todos.length;
+  const comment = text.value;
+  const status = "作業中";
+  const todo = {
+    taskid,
+    comment,
+    status,
+  };
+  return todo;
+}
+
+addbtn.addEventListener("click", () => {
+  const todo = createTodo();
+  todos.push(todo);
+  　radioChange() ;
+  });
+
+const createstatusbutton = (todo) => {
+  const createstatusBtn = document.createElement("button");
+  createstatusBtn.innerText = todo.status;
+  createstatusBtn.addEventListener("click", () => {
+    if ((todos.status = "作業中")) {
+      todo.status = "完了";
+    } else {
+      todo.status = "作業中";
+    }
+    radioChange();
+  });
+  return createstatusBtn;
+};
+
+const createremoveButton = (index) => {
+  const createremoveBtn = document.createElement("button");
+  createremoveBtn.textContent = "削除";
+  createremoveBtn.addEventListener("click", () => {
+    todos.splice(index, 1);
+    radioChange();
+    todos.reduce((Idnum, todo) => (todo.taskid = Idnum + 1), -1);
+    radioChange();
+  });
+  return createremoveBtn;
+};
+
+const radioChange = () => {
+  const radioAll = document.getElementById("radioAll");
+  const radioWork = document.getElementById("radioWork");
+  const radioDone = document.getElementById("radioDone");
+
+  if (radioAll.checked) {
+    todos.slice();
+    return displayTodos(todos);
+  } else if (radioWork.checked) {
+    let filterdoing = todos.filter((todo) => {
+      return todo.status === "作業中";
+    });
+    return displayTodos(filterdoing);
+  } else if (radioDone.checked) {
+    let filterdone = todos.filter((todo) => {
+      return todo.status === "完了";
+    });
+    return displayTodos(filterdone);
+  }
+}
